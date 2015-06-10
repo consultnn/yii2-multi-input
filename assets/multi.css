@@ -3,12 +3,14 @@
     outline: none;
     opacity: 0.7;
     color: green;
+    cursor: pointer;
 }
 
 .multiply-input-rows .remove-row {
     outline: none;
     opacity: 0.7;
     color: red;
+    cursor: pointer;
 }
 
 .multiply-input-rows .add-row:hover,

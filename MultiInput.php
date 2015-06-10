@@ -53,9 +53,9 @@ class MultiInput extends InputWidget
     protected function renderButton($index)
     {
         if ($index === 0) {
-            return Html::a(null, '#', ['class' => 'glyphicon glyphicon-plus form-control-static col-lg-1 col-sm-1 add-row']);
+            return Html::tag('span', null, ['class' => 'glyphicon glyphicon-plus form-control-static col-lg-1 col-sm-1 add-row']);
         } else {
-            return Html::a(null, '#', ['class' => 'glyphicon glyphicon-trash form-control-static col-lg-1 col-sm-1 remove-row']);
+            return Html::tag('span', null, ['class' => 'glyphicon glyphicon-trash form-control-static col-lg-1 col-sm-1 remove-row']);
         }
     }
 

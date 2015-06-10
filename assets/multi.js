@@ -26,7 +26,10 @@
                 plugin.addRow();
                 return false;
             });
-            $(this.element).on('click', '.remove-row', this.removeRow);
+            $(this.element).on('click', '.remove-row', function(){
+                plugin.removeRow(this);
+                return false;
+            });
         },
         addRow: function () {
             this.settings.maxIndex++;
@@ -36,8 +39,8 @@
             //var newRow = this._templateRow...replace('{$id}', this.maxIndex);
             $(this.element).append(newRow);
         },
-        removeRow: function() {
-            console.log('remove');
+        removeRow: function(element) {
+            $(element).parent().remove();
         }
     });
 
