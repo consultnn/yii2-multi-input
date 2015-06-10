@@ -1,0 +1,21 @@
+
+.multiply-input-rows .add-row {
+    outline: none;
+    opacity: 0.7;
+    color: green;
+}
+
+.multiply-input-rows .remove-row {
+    outline: none;
+    opacity: 0.7;
+    color: red;
+}
+
+.multiply-input-rows .add-row:hover,
+.multiply-input-rows .remove-row:hover {
+    opacity: 1;
+}
+
+.multiply-input-rows .template {
+    display: none;
+}
