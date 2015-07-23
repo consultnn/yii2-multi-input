@@ -44,7 +44,7 @@ class MultiInput extends InputWidget
     protected function renderRows()
     {
         $rows = [];
-        foreach($this->model->{$this->attribute} as $index => $value) {
+        foreach((array)$this->model->{$this->attribute} as $index => $value) {
             $rows[] = $this->renderRow($index, $value);
         }
         return Html::tag('div', implode(PHP_EOL, $rows), ['id' => $this->id, 'class' => 'multiply-input-rows']);
