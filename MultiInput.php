@@ -10,6 +10,9 @@ use yii\widgets\InputWidget;
 
 class MultiInput extends InputWidget
 {
+    /**
+     * @var ActiveForm
+     */
     public $form;
 
     public $rowView;
@@ -62,7 +65,7 @@ class MultiInput extends InputWidget
     protected function renderRow($index, $value)
     {
         if (!empty($this->rowView)) {
-            $row = $this->render($this->rowView, ['index' => $index, 'value' => $value, 'form' => $this->form]);
+            $row = $this->view->render($this->rowView, ['index' => $index, 'value' => $value, 'form' => $this->form]);
         } else {
             $row = $this->form->field($this->model, "{$this->attribute}[{$index}]", ['options' => ['class' => 'col-lg-11']]);
         }
