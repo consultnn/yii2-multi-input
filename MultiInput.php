@@ -17,6 +17,8 @@ class MultiInput extends InputWidget
 
     public $rowView;
 
+    public $initEmpty = true;
+
     public function init()
     {
         if (empty($this->form) || !($this->form instanceof ActiveForm)) {
@@ -28,7 +30,7 @@ class MultiInput extends InputWidget
     {
         $this->registerClientScript();
 
-        if (count($this->model->{$this->attribute}) === 0) {
+        if (count($this->model->{$this->attribute}) === 0 && $this->initEmpty) {
             $this->initEmpty();
         }
         return $this->renderRows();
@@ -47,19 +49,29 @@ class MultiInput extends InputWidget
     protected function renderRows()
     {
         $rows = [];
-        foreach((array)$this->model->{$this->attribute} as $index => $value) {
+        if (!count($this->model->{$this->attribute}) || !$this->initEmpty) {
+            $emptyAttribute = Html::activeHiddenInput($this->model, $this->attribute, [ 'value' => false]);
+            $rows[] = Html::tag('div', $emptyAttribute.$this->renderAddButton() , ['class' => 'row']);
+        }
+
+        foreach($this->model->{$this->attribute} as $index => $value) {
             $rows[] = $this->renderRow($index, $value);
         }
+
         return Html::tag('div', implode(PHP_EOL, $rows), ['id' => $this->id, 'class' => 'multiply-input-rows']);
+    }
+
+    protected function renderAddButton()
+    {
+        return Html::tag('span', null, ['class' => 'glyphicon glyphicon-plus form-control-static col-lg-1 col-sm-1 add-row']);
     }
 
     protected function renderButton($index)
     {
-        if ($index === 0) {
-            return Html::tag('span', null, ['class' => 'glyphicon glyphicon-plus form-control-static col-lg-1 col-sm-1 add-row']);
-        } else {
-            return Html::tag('span', null, ['class' => 'glyphicon glyphicon-trash form-control-static col-lg-1 col-sm-1 remove-row']);
+        if ($index === 0 && $this->initEmpty) {
+            return $this->renderAddButton();
         }
+        return Html::tag('span', null, ['class' => 'glyphicon glyphicon-trash form-control-static col-lg-1 col-sm-1 remove-row']);
     }
 
     protected function renderRow($index, $value)
