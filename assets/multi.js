@@ -37,10 +37,11 @@
             var newRow = $.parseHTML(template);
             $(newRow).removeClass('template');
             //var newRow = this._templateRow...replace('{$id}', this.maxIndex);
-            $(this.element).append(newRow);
+            $(this.element).append(newRow).trigger('multiInput:addRow', [newRow]);
         },
         removeRow: function(element) {
             $(element).parent().remove();
+            $(this.element).trigger('multiInput:removeRow');
         }
     });
 
