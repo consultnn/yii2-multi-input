@@ -19,6 +19,9 @@ class MultiInput extends InputWidget
 
     public $initEmpty = true;
 
+    public $addIconClass = 'glyphicon glyphicon-plus';
+    public $removeIconClass = 'glyphicon glyphicon-trash';
+
     public function init()
     {
         if (empty($this->form) || !($this->form instanceof ActiveForm)) {
@@ -63,7 +66,7 @@ class MultiInput extends InputWidget
 
     protected function renderAddButton()
     {
-        return Html::tag('span', null, ['class' => 'glyphicon glyphicon-plus form-control-static col-lg-1 col-sm-1 add-row']);
+        return Html::tag('span', null, ['class' => $this->addIconClass.' form-control-static col-lg-1 col-sm-1 add-row']);
     }
 
     protected function renderButton($index)
@@ -71,7 +74,7 @@ class MultiInput extends InputWidget
         if ($index === 0 && $this->initEmpty) {
             return $this->renderAddButton();
         }
-        return Html::tag('span', null, ['class' => 'glyphicon glyphicon-trash form-control-static col-lg-1 col-sm-1 remove-row']);
+        return Html::tag('span', null, ['class' => $this->removeIconClass.' form-control-static col-lg-1 col-sm-1 remove-row']);
     }
 
     protected function renderRow($index, $value)
