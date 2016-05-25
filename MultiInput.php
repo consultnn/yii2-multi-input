@@ -57,7 +57,7 @@ class MultiInput extends InputWidget
             $rows[] = Html::tag('div', $emptyAttribute.$this->renderAddButton() , ['class' => 'row']);
         }
 
-        foreach($this->model->{$this->attribute} as $index => $value) {
+        foreach((array) $this->model->{$this->attribute} as $index => $value) {
             $rows[] = $this->renderRow($index, $value);
         }
 
@@ -88,7 +88,9 @@ class MultiInput extends InputWidget
                 'attribute' => $this->attribute
             ]);
         } else {
-            $row = $this->form->field($this->model, "{$this->attribute}[{$index}]", ['options' => ['class' => 'col-lg-11']]);
+            $options = $this->options;
+            Html::addCssClass($options['options'], 'col-lg-11');
+            $row = $this->form->field($this->model, "{$this->attribute}[{$index}]", $options);
         }
 
         $button = $this->renderButton($index);
