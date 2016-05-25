@@ -54,12 +54,15 @@ class MultiInput extends InputWidget
         $rows = [];
         if (!count($this->model->{$this->attribute}) || !$this->initEmpty) {
             $emptyAttribute = Html::activeHiddenInput($this->model, $this->attribute, [ 'value' => false]);
-            $rows[] = Html::tag('div', $emptyAttribute.$this->renderAddButton() , ['class' => 'row']);
+            $rows[] = Html::tag('div', $emptyAttribute.$this->renderAddButton(), ['class' => 'row']);
         }
 
-        foreach((array) $this->model->{$this->attribute} as $index => $value) {
-            $rows[] = $this->renderRow($index, $value);
+        if (!empty($this->model->{$this->attribute})) {
+            foreach ($this->model->{$this->attribute} as $index => $value) {
+                $rows[] = $this->renderRow($index, $value);
+            }
         }
+
 
         return Html::tag('div', implode(PHP_EOL, $rows), ['id' => $this->id, 'class' => 'multiply-input-rows']);
     }
@@ -94,7 +97,7 @@ class MultiInput extends InputWidget
         }
 
         $button = $this->renderButton($index);
-        return Html::tag('div', $row.$button , ['class' => 'row']);
+        return Html::tag('div', $row.$button, ['class' => 'row']);
     }
 
     protected function registerClientScript()
