@@ -30,6 +30,11 @@
                 plugin.removeRow(this);
                 return false;
             });
+
+            $(this.element).on('click', '.clone-row', function(){
+                plugin.cloneRow(this);
+                return false;
+            });
         },
         addRow: function () {
             this.settings.maxIndex++;
@@ -42,6 +47,46 @@
         removeRow: function(element) {
             $(element).parent().remove();
             $(this.element).trigger('multiInput:removeRow');
+        },
+        cloneRow: function(element) {
+            var sourceRow = $(element).parent();
+            this.settings.maxIndex++;
+            var template = this.settings.template.replace(/#index#/g, this.settings.maxIndex);
+            var newRow = $.parseHTML(template);
+            $(newRow).removeClass('template');
+
+            sourceRow.find('input[type="text"], input[type="hidden"]').each(function (i, el) {
+                var match = $(el).attr('name').match(/\[\w+\]$/gi);
+                var name = match[0];
+                $(newRow).find('input[name*="' + name + '"]').val($(el).val());
+            });
+
+            sourceRow.find('input[type="checkbox"]').each(function (i, el) {
+                var match = $(el).attr('name').match(/\[\w+\]$/gi);
+                var name = match[0];
+                $(newRow).find('input[name*="' + name + '"]').prop('checked', $(el).prop('checked'));
+            });
+
+            sourceRow.find('select').each(function (i, el) {
+                if ($(el).prop('multiple')) {
+                    var match = $(el).attr('name').match(/\[\w+\]\[\]$/gi);
+
+                    var name = match[0];
+                    $(el).find('[selected]').each(function (i, op) {
+                        $(newRow).find('select[name*="' + name + '"]')
+                            .append($("<option></option>")
+                                .attr({
+                                    value:$(op).attr('value'),
+                                    selected:'selected'
+                                }).text($(op).text()));
+                    });
+                } else {
+                    var match = $(el).attr('name').match(/\[\w+\]$/gi);
+                    var name = match[0];
+                    $(newRow).find('select[name*="' + name + '"]').val($(el).val());
+                }
+            });
+            $(this.element).append(newRow).trigger('multiInput:addRow', [newRow]);
         }
     });
 
