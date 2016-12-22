@@ -72,7 +72,7 @@
                     var match = $(el).attr('name').match(/\[\w+\]\[\]$/gi);
 
                     var name = match[0];
-                    $(el).find('option').each(function (i, op) {
+                    $(el).find('option:not([data-select2-tag])').each(function (i, op) {
                         $(newRow).find('select[name*="' + name + '"]')
                             .append($("<option></option>")
                                 .attr({
