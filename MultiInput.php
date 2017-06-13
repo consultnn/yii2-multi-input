@@ -94,8 +94,8 @@ class MultiInput extends InputWidget
             ]);
         } else {
             $options = $this->options;
-            Html::addCssClass($options['options'], 'col-lg-11');
-            $row = Html::activeInput($this->type, $this->model, "{$this->attribute}[{$index}]", $options);
+            Html::addCssClass($options, 'form-control');
+            $row = Html::tag('div', Html::activeInput($this->type, $this->model, "{$this->attribute}[{$index}]", $options), ['class' => 'col-lg-11']);
         }
 
         $button = $this->renderButton($index);
