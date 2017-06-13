@@ -22,6 +22,8 @@ class MultiInput extends InputWidget
     public $addIconClass = 'glyphicon glyphicon-plus';
     public $removeIconClass = 'glyphicon glyphicon-trash';
 
+    public $type = 'text';
+
     public function init()
     {
         if (empty($this->form) || !($this->form instanceof ActiveForm)) {
@@ -54,7 +56,7 @@ class MultiInput extends InputWidget
         $rows = [];
         if (!count($this->model->{$this->attribute}) || !$this->initEmpty) {
             $emptyAttribute = Html::activeHiddenInput($this->model, $this->attribute, [ 'value' => false]);
-            $rows[] = Html::tag('div', $emptyAttribute.$this->renderAddButton(), ['class' => 'row']);
+            $rows[] = Html::tag('div', $emptyAttribute . $this->renderAddButton(), ['class' => 'row']);
         }
 
         if (!empty($this->model->{$this->attribute})) {
@@ -69,7 +71,7 @@ class MultiInput extends InputWidget
 
     protected function renderAddButton()
     {
-        return Html::tag('span', null, ['class' => $this->addIconClass.' form-control-static col-lg-1 col-sm-1 add-row']);
+        return Html::tag('span', null, ['class' => $this->addIconClass . ' form-control-static col-lg-1 col-sm-1 add-row']);
     }
 
     protected function renderButton($index)
@@ -77,7 +79,7 @@ class MultiInput extends InputWidget
         if ($index === 0 && $this->initEmpty) {
             return $this->renderAddButton();
         }
-        return Html::tag('span', null, ['class' => $this->removeIconClass.' form-control-static col-lg-1 col-sm-1 remove-row']);
+        return Html::tag('span', null, ['class' => $this->removeIconClass . ' form-control-static col-lg-1 col-sm-1 remove-row']);
     }
 
     protected function renderRow($index, $value)
@@ -93,11 +95,11 @@ class MultiInput extends InputWidget
         } else {
             $options = $this->options;
             Html::addCssClass($options['options'], 'col-lg-11');
-            $row = $this->form->field($this->model, "{$this->attribute}[{$index}]", $options);
+            $row = Html::activeInput($this->type, $this->model, "{$this->attribute}[{$index}]", $options);
         }
 
         $button = $this->renderButton($index);
-        return Html::tag('div', $row.$button, ['class' => 'row']);
+        return Html::tag('div', $row . $button, ['class' => 'row']);
     }
 
     protected function registerClientScript()
