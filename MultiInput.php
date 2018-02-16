@@ -35,7 +35,9 @@ class MultiInput extends InputWidget
     {
         $this->registerClientScript();
 
-        if (count($this->model->{$this->attribute}) === 0 && $this->initEmpty) {
+        $value = $this->model->{$this->attribute};
+
+        if (empty($value) && $this->initEmpty) {
             $this->initEmpty();
         }
         return $this->renderRows();
@@ -43,7 +45,7 @@ class MultiInput extends InputWidget
 
     protected function initEmpty()
     {
-        $this->model->{$this->attribute}[] = null;
+        $this->model->{$this->attribute} = [null];
     }
 
     protected function renderTemplateRow()
@@ -54,7 +56,7 @@ class MultiInput extends InputWidget
     protected function renderRows()
     {
         $rows = [];
-        if (!count($this->model->{$this->attribute}) || !$this->initEmpty) {
+        if (empty($this->model->{$this->attribute}) || !$this->initEmpty) {
             $emptyAttribute = Html::activeHiddenInput($this->model, $this->attribute, [ 'value' => false]);
             $rows[] = Html::tag('div', $emptyAttribute . $this->renderAddButton(), ['class' => 'row']);
         }
@@ -108,7 +110,8 @@ class MultiInput extends InputWidget
 
         MultiInputAsset::register($view);
 
-        $maxIndex = count($this->model->{$this->attribute});
+        $value = $this->model->{$this->attribute};
+        $maxIndex = empty($value) ? 0 : count($value);
         $js = "jQuery('#{$this->id}').multiInput({template: {$this->renderTemplateRow()}, maxIndex: {$maxIndex}});";
         $view->registerJs($js);
     }
