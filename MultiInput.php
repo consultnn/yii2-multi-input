@@ -37,15 +37,27 @@ class MultiInput extends InputWidget
 
         $value = $this->model->{$this->attribute};
 
-        if (empty($value) && $this->initEmpty) {
+        if ($this::isEmpty($value) && $this->initEmpty) {
             $this->initEmpty();
         }
+
         return $this->renderRows();
     }
 
     protected function initEmpty()
     {
         $this->model->{$this->attribute} = [null];
+    }
+
+    protected static function isEmpty($value)
+    {
+        if (empty($value)) {
+            return true;
+        } elseif (($value instanceof \Countable) && (count($value) === 0)) {
+            return true;
+        }
+
+        return false;
     }
 
     protected function renderTemplateRow()
@@ -56,18 +68,17 @@ class MultiInput extends InputWidget
     protected function renderRows()
     {
         $rows = [];
-        if (empty($this->model->{$this->attribute}) || !$this->initEmpty) {
+        if ($this::isEmpty($this->model->{$this->attribute}) || !$this->initEmpty) {
             $emptyAttribute = Html::activeHiddenInput($this->model, $this->attribute, [ 'value' => false]);
             $rows[] = Html::tag('div', $emptyAttribute . $this->renderAddButton(), ['class' => 'row']);
         }
 
-        if (!empty($this->model->{$this->attribute})) {
+        if (!$this::isEmpty($this->model->{$this->attribute})) {
             foreach ($this->model->{$this->attribute} as $index => $value) {
                 $rows[] = $this->renderRow($index, $value);
             }
         }
-
-
+        
         return Html::tag('div', implode(PHP_EOL, $rows), ['id' => $this->id, 'class' => 'multiply-input-rows']);
     }
 
